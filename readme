@@ -1,0 +1,16 @@
+ _   _      _ _         _____ _                       _       
+| | | |    | | |       /  ___| |                     | |      
+| |_| | ___| | | ___   \ `--.| |__   ___  _ __  _ __ | |_   _ 
+|  _  |/ _ \ | |/ _ \   `--. \ '_ \ / _ \| '_ \| '_ \| | | | |
+| | | |  __/ | | (_) | /\__/ / | | | (_) | |_) | |_) | | |_| |
+\_| |_/\___|_|_|\___/  \____/|_| |_|\___/| .__/| .__/|_|\__, |
+                                         | |   | |       __/ |
+                                         |_|   |_|      |___/ 
+                                         
+================================================================
+
+This project is a simple bootstrap using Python, Tornado, Gunicorn, and ElasticSearch.
+
+To get this running, you will need to have all of the above setup and configured.
+
+Any questions, email coding@shopply.com                                         
