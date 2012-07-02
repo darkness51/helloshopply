@@ -122,6 +122,9 @@ def config_repo(name):
         run('git clone git@github.com:darkness51/helloshopply.git')
     
 def configure_supervisord(instance_name):
+    """
+    Configure supervisord to daemonize the tornado script
+    """
     instance = get_instance(instance_name)
     with settings(host_string=instance.public_dns_name):
         sudo("cp ~/helloshopply/configs/supervisord /etc/init.d/")
@@ -131,6 +134,9 @@ def configure_supervisord(instance_name):
         sudo("service supervisord start")
         
 def install_nginx(instance_name):
+    """
+    Install and configure Nginx
+    """
     instance = get_instance(instance_name)
     with settings(host_string=instance.public_dns_name):
         sudo("apt-get install -y nginx")
@@ -141,8 +147,17 @@ def install_nginx(instance_name):
         sudo("service nginx restart")
     
 def update_repo(instance_repo):
+    """
+    Update the repo and restart supervisord service
+    """
     instance = get_instance(instance_name)
     with settings(host_string=instance.public_dns_name):
         with cd("helloshopply"):
             run("git pull")
             sudo("supervisorctl restart shopply")
+            
+def install_monit():
+    """
+    Install monit monitoring tool
+    """
+    sudo("apt-get install -y monit")
