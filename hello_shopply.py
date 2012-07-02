@@ -6,4 +6,4 @@ class HelloShopplyServiceHandler(tornado.web.RequestHandler):
     def get(self):
         model = Model()
         self.set_header('Content-Type', 'application/json')
-        self.write(model.get_message()['allinfo'])    
+        self.write(model.get_message())    
