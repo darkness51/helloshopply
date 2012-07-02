@@ -1,6 +1,6 @@
 import boto
 from os import path, pardir
-from fabric.api import env, sudo, cd, local, run
+from fabric.api import env, sudo, cd, local, run, settings
 from fabric.operations import get, put, open_shell
 from fabric.colors import green, red
 from pprint import pprint
@@ -43,45 +43,53 @@ def get_instance(name):
             
     return instance
     
-env.hosts = [get_instance("shopply").public_dns_name]
+#env.hosts = ["64.22.109.92"]
     
-def install_elasticsearch():
+def install_elasticsearch(name):
     """
     Install elastic search on EC2 instance
     """
-
-    # Download the deb package
-    run("wget https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.7.deb")
-    # Installing
-    sudo("apt-get -f install")
-    sudo("apt-get install openjdk-7-jre")
-    sudo("dpkg -i elasticsearch-0.19.7.deb")
-    sudo("rm -r elasticsearch-0.19.7.deb")
+    instance = get_instance(name)
+    with settings(host_string=instance.public_dns_name):
+        # Download the deb package
+        run("wget https://github.com/downloads/elasticsearch/elasticsearch/elasticsearch-0.19.7.deb")
+        # Installing
+        sudo("apt-get -f install")
+        sudo("apt-get install openjdk-7-jre")
+        sudo("dpkg -i elasticsearch-0.19.7.deb")
+        sudo("rm -r elasticsearch-0.19.7.deb")
     
-def install_jenkins():
+def install_jenkins(name):
     """
     Install Jenkins
     """
-    # Added to apt-get lists
-    sudo('wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -')
-    sudo("sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'")
-    sudo('apt-get -y update')
-    sudo('apt-get install -y python-pycurl python-setuptools jenkins git')
-    # Install pip
-    sudo("easy_install pip")
-    # Install virtualenv
-    sudo("pip install virtualenv")
-    # Install supervisor to manage process
-    sudo("pip install supervisor")
+    instance = get_instance(name)
+    with settings(host_string=instance.public_dns_name):
+        # Added to apt-get lists
+        sudo('wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -')
+        sudo("sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'")
+        sudo('apt-get -y update')
+        sudo('apt-get install -y python-pycurl python-setuptools jenkins git')
+        # Install pip
+        sudo("easy_install pip")
+        # Install virtualenv
+        sudo("pip install virtualenv")
+        # Install supervisor to manage process
+        sudo("pip install supervisor")
     
-def create_virtualenv():
-    run("virtualenv --distribute venv")
+def create_virtualenv(name):
+    """
+    Create a new virtualenv
+    """
+    instance = get_instance(name)
+    with settings(host_string=instance.public_dns_name):
+        run("virtualenv --distribute venv")
     
 def install_requirements():
-    with cd("helloshopply"):
-        with prefix('source ~/venv/bin/activate'):
-            run("pip install -r requirements/requirements.txt")
-    
-    
+    instance = get_instance(name)
+    with settings(host_string=instance.public_dns_name):
+        with cd("helloshopply"):
+            with prefix('source ~/venv/bin/activate'):
+                run("pip install -r requirements/requirements.txt")
     
     
