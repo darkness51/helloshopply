@@ -6,4 +6,5 @@ class Model(object):
         self.conn = ES('127.0.0.1:9200')
         
     def get_message(self):  
-        return self.conn.collect_info()
+        self.conn.collect_info()
+        return self.conn.info
