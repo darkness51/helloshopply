@@ -136,7 +136,7 @@ def install_nginx(instance_name):
         sudo("apt-get install -y nginx")
         sudo("cp ~/helloshopply/configs/shopply /etc/nginx/sites-available/")
         with cd("/etc/nginx/sites-enabled/"):
-            sudo("ln -n /etc/nginx/sites-available/shopply")
+            sudo("ln -s /etc/nginx/sites-available/shopply")
             
         sudo("service nginx restart")
     
