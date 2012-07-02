@@ -1,0 +1,10 @@
+Fabric==1.4.2
+boto==2.5.2
+distribute==0.6.24
+nose==1.1.2
+pycrypto==2.6
+pyes==0.19.1
+requests==0.13.2
+ssh==1.7.14
+tornado==2.3
+wsgiref==0.1.2

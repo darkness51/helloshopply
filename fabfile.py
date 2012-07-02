@@ -63,9 +63,17 @@ def install_jenkins():
     sudo('wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | sudo apt-key add -')
     sudo("sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'")
     sudo('apt-get -y update')
-    sudo('apt-get install -y python python-pycurl python-setuptools jenkins git ganglia-monitor')
+    sudo('apt-get install -y python-pycurl python-setuptools jenkins git')
     sudo("easy_install pip")
     sudo("pip install virtualenv")
+    
+def create_virtualenv():
+    run("virtualenv --distribute venv")
+    
+def install_requirements():
+    with cd("helloshopply"):
+        with prefix('source ~/venv/bin/activate'):
+            run("pip install -r requirements/requirements.txt")
     
     
     
