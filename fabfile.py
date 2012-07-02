@@ -66,6 +66,7 @@ def install_jenkins():
     sudo('apt-get install -y python-pycurl python-setuptools jenkins git')
     sudo("easy_install pip")
     sudo("pip install virtualenv")
+    sudo("pip install supervisor")
     
 def create_virtualenv():
     run("virtualenv --distribute venv")
