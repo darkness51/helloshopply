@@ -140,3 +140,9 @@ def install_nginx(instance_name):
             
         sudo("service nginx restart")
     
+def update_repo(instance_repo):
+    instance = get_instance(instance_name)
+    with settings(host_string=instance.public_dns_name):
+        with cd("helloshopply"):
+            run("git pull")
+            sudo("supervisorctl restart shopply")
