@@ -129,4 +129,14 @@ def configure_supervisord(instance_name):
         sudo("cp ~/helloshopply/configs/supervisord.conf /etc/")
         run("mkdir -p ~/helloshopply/logs/")
         sudo("service supervisord start")
+        
+def install_nginx(instance_name):
+    instance = get_instance(instance_name)
+    with settings(host_string=instance.public_dns_name):
+        sudo("apt-get install -y nginx")
+        sudo("cp ~/helloshopply/configs/shopply /etc/nginx/sites-available/")
+        with cd("/etc/nginx/sites-enabled/"):
+            sudo("ln -n /etc/nginx/sites-available/shopply")
+            
+        sudo("service nginx restart")
     
