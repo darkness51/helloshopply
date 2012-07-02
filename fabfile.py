@@ -11,7 +11,14 @@ key_path = path.join(pardir, pardir, "claves_amazon/darkangel51.pem")
 env.user = "ubuntu"
 env.key_filename = key_path
 
-def create_ec2_instace(name="shopply"):
+def create_security_group():
+    conn = boto.connect_ec2()
+    sec_group = conn.create_security_group("shopply", "Shopply servers security group")
+    sec_group.authorize('tcp', 80, 80, '0.0.0.0/0')
+    sec_group.authorize('tcp', 22, 22, '0.0.0.0/0')
+    sec_group.authorize('tcp', 8080, 8080, '0.0.0.0/0')
+
+def create_ec2_instace(name="shopply", security_group="dwd"):
     """
     Create new instance of AWS EC2
     """
@@ -20,12 +27,13 @@ def create_ec2_instace(name="shopply"):
         AMI,
         key_name = KEYPAIR,
         instance_type = 't1.micro',
-        security_groups = ["dwd"],
+        security_groups = [security_group],
         instance_initiated_shutdown_behavior = "stop"
     )
     
     instance = reservation.instances[0]
     instance.add_tag("Name", name)
+    
     
     print "Launching instance: ", instance.public_dns_name
     
