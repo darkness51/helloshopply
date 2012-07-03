@@ -132,6 +132,7 @@ def configure_supervisord(instance_name):
         sudo("chmod +x /etc/init.d/supervisord")
         sudo("cp ~/helloshopply/configs/supervisord.conf /etc/")
         run("mkdir -p ~/helloshopply/logs/")
+        sudo("update-rc.d supervisord defaults")
         sudo("service supervisord start")
         
 def update_supervisord_config(instance_name):
@@ -175,3 +176,14 @@ def configure_elasticsearch(instance_name):
         sudo("chmod +x /etc/init.d/elasticsearch")
         sudo("cp ~/helloshopply/configs/elasticsearch.yml /etc/elasticsearch/")
         sudo("service elasticsearch start")
+        
+def install_mongodb(instance_name):
+    """
+    Install mongodb on server
+    """
+    instance = get_instance(instance_name)
+    with settings(host_string=instance.public_dns_name):
+        sudo("apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10")
+        sudo('echo "\ndeb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" >> /etc/apt/sources.list')
+        sudo("apt-get update")
+        sudo("apt-get install mongodb-10gen")
