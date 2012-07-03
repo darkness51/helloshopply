@@ -17,6 +17,7 @@ def create_security_group():
     sec_group.authorize('tcp', 80, 80, '0.0.0.0/0')
     sec_group.authorize('tcp', 22, 22, '0.0.0.0/0')
     sec_group.authorize('tcp', 8080, 8080, '0.0.0.0/0')
+    sec_group.authorize('tcp', 9001, 9001, '0.0.0.0/0')
 
 def create_ec2_instace(name="shopply", security_group="dwd"):
     """
@@ -133,7 +134,7 @@ def configure_supervisord(instance_name):
         run("mkdir -p ~/helloshopply/logs/")
         sudo("service supervisord start")
         
-def update_supervisord_config(instace_name):
+def update_supervisord_config(instance_name):
     instance = get_instance(instance_name)
     with settings(host_string=instance.public_dns_name):
         sudo("cp ~/helloshopply/configs/supervisord.conf /etc/")
@@ -153,7 +154,7 @@ def install_nginx(instance_name):
             
         sudo("service nginx restart")
     
-def update_repo(instance_repo):
+def update_repo(instance_name):
     """
     Update the repo and restart supervisord service
     """
