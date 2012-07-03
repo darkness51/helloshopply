@@ -220,7 +220,7 @@ def install_graylog2(instance_name):
         # Installing Graylog2 server
         with cd("/opt"):
             sudo("curl  http://cloud.github.com/downloads/Graylog2/graylog2-server/graylog2-server-0.9.6.tar.gz | tar zxv")
-            sudo("ln -s graylog2-server-0.9.6/ graylog2-server")
+            sudo("ln -s graylog2-server-0.9.6 graylog2-server")
             sudo("cp /opt/graylog2-server/graylog2.conf{.example,}")
             
         with cd("/etc"):
