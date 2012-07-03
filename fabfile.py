@@ -168,6 +168,7 @@ def install_nginx(instance_name):
     instance = get_instance(instance_name)
     with settings(host_string=instance.public_dns_name):
         sudo("apt-get install -y nginx")
+        sudo("apt-get install libcurl4-openssl-dev")
         sudo("cp ~/helloshopply/configs/shopply /etc/nginx/sites-available/")
         with cd("/etc/nginx/sites-enabled/"):
             sudo("ln -s /etc/nginx/sites-available/shopply")
@@ -240,6 +241,6 @@ def install_graylog2(instance_name):
             sudo("chown -R graylog2:graylog2 /opt/graylog2-web-interface*")
             sudo("usermod -G admin graylog2")
             with cd("/opt/graylog2-web-interface"):
-                run("gem install bundler --no-ri --no-rdoc")
-                run("bundle install")
+                sudo("gem install bundler --no-ri --no-rdoc")
+                sudo("bundle install")
         
