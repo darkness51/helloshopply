@@ -164,8 +164,14 @@ def update_repo(instance_name):
             run("git pull")
             sudo("supervisorctl restart shopply")
             
-def install_monit():
+def configure_elasticsearch(instance_name):
     """
-    Install monit monitoring tool
+    Replace configuration for elasticsearch
     """
-    sudo("apt-get install -y monit")
+    instace = get_instance(instance_name)
+    with settings(host_string=instance.public_dns_name):
+        sudo("service elasticsearch stop")
+        sudo("cp ~/helloshopply/configs/elasticsearch /etc/init.d/")
+        sudo("chmod +x /etc/init.d/elasticsearch")
+        sudo("cp ~/helloshopply/configs/elasticsearch.yml /etc/elasticsearch/")
+        sudo("service elasticsearch start")
