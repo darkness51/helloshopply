@@ -133,6 +133,13 @@ def configure_supervisord(instance_name):
         run("mkdir -p ~/helloshopply/logs/")
         sudo("service supervisord start")
         
+def update_supervisord_config(instace_name):
+    instance = get_instance(instance_name)
+    with settings(host_string=instance.public_dns_name):
+        sudo("cp ~/helloshopply/configs/supervisord.conf /etc/")
+        sudo("service supervisord stop")
+        sudo("service supervisord start")
+        
 def install_nginx(instance_name):
     """
     Install and configure Nginx
